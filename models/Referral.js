@@ -24,7 +24,8 @@ const ReferralSchema = new Schema({
 
   status: {
     type: String,
-    enum: ["pending", "active"]
+    enum: ["pending", "active"],
+    default: "pending"
   }
 });
 

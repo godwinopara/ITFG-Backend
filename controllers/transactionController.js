@@ -29,6 +29,9 @@ exports.createTransaction = async(req, res) => {
             user.total_deposit += amount
             user.total_pending_deposit_amount += amount
         }else if (type === "withdrawal"){
+            if(user.wallet_balance < amount){
+                res.send(400).json({message: "Insufficient Balance"})
+            }
             user.wallet_balance -= amount
             user.total_withdrawal += amount
             user.total_pending_withdrawal_amount += amount
