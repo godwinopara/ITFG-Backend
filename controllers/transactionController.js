@@ -7,7 +7,7 @@ exports.createTransaction = async(req, res) => {
     const {userId, transactionType, paymentMethod, amount, type,  status} = req.body
 
     try {
-        const user = await User.findOne(userId)
+        const user = await User.findById(userId)
         if(!user) {
             return res.status(404).json({message: "User not found"})
         }

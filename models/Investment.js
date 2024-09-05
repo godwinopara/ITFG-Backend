@@ -13,7 +13,7 @@ const investmentSchema = new mongoose.Schema({
     },
     profit: {
         type:String,
-        required:true
+        default: 0.00
     },
     start: {
         type: Date,
