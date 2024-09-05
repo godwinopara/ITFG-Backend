@@ -52,10 +52,7 @@ const UserSchema = new Schema({
     required: true,
   },
   wallet_balance: {
-    usd: { type: Number, default: 0.00 },
-    btc: { type: Number, default: 0.00 },
-    eth: { type: Number, default: 0.00 },
-    usdt: { type: Number, default: 0.00 },
+    type: Number, default: 0.00
   },
   total_deposit: { type: Number, default: 0.00 },
   total_withdrawal: { type: Number, default: 0.00 },
