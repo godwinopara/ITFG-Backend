@@ -42,3 +42,15 @@ exports.createTransaction = async(req, res) => {
         res.status(500).json({message: "Error Processing Transaction", error})
     }
 }
+
+
+exports.getUserTransactions = async (req, res) => {
+    const {userId} = req.params
+
+    try {
+        const transactions = await Transaction.find({user: userId})
+        res.status(200).json(transactions)
+    } catch (error) {
+        res.status(500).json({message: "Error fetching transaction", error})
+    }
+}
