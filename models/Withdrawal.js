@@ -1,8 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-// Define the schema for Transaction
-const TransactionSchema = new Schema({
+const WithdrawalSchema = new Schema({
   transactionType: {
     type: String,
     required: true,
@@ -15,14 +14,13 @@ const TransactionSchema = new Schema({
     type: Number,
     required: true,
   },
-
-  type: {
+  walletAddress: {
     type: String,
     required: true,
-    enum: ["deposit", "withdrawal"], // Distinguishes between deposit and withdrawal
   },
-  walletAddress: { type: String },
-  transactionId: { type: String },
+  transactionId: {
+    type: String,
+  },
   status: {
     type: String,
     enum: ["pending", "completed", "failed"],
@@ -32,6 +30,7 @@ const TransactionSchema = new Schema({
   date: {
     type: Date,
     default: Date.now,
+    required: true,
   },
   user: {
     type: Schema.Types.ObjectId,
@@ -40,7 +39,5 @@ const TransactionSchema = new Schema({
   },
 });
 
-// Create the Transaction model
-const Transaction = mongoose.model("Transaction", TransactionSchema);
-
-module.exports = Transaction;
+const Withdrawal = mongoose.model("Withdrawal", WithdrawalSchema);
+module.exports = Withdrawal;

@@ -1,20 +1,15 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-
-// fullname: string;
-//   email: string;
-//   date: string;
-//   status: string;
 
 // Define the schema for Referral
 const ReferralSchema = new Schema({
   referred_by: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
+    ref: "User",
   },
   referred_user: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
+    ref: "User",
     required: true,
   },
   date: {
@@ -25,11 +20,11 @@ const ReferralSchema = new Schema({
   status: {
     type: String,
     enum: ["pending", "active"],
-    default: "pending"
-  }
+    default: "pending",
+  },
 });
 
 // Create the Referral model from the schema
-const Referral = mongoose.model('Referral', ReferralSchema);
+const Referral = mongoose.model("Referral", ReferralSchema);
 
 module.exports = Referral;

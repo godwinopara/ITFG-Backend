@@ -1,10 +1,8 @@
-// controllers/referralBonusController.js
-
-const ReferralBonus = require("../models/ReferralBonus");
+const ReferralBonus = require("../models/ReferralBonuses");
 const User = require("../models/User");
 
 // Assign a referral bonus
-exports.assignReferralBonus = async (req, res) => {
+const assignReferralBonus = async (req, res) => {
   const { userId, referralName, email, amount } = req.body;
 
   try {
@@ -34,8 +32,8 @@ exports.assignReferralBonus = async (req, res) => {
 };
 
 // Get referral bonuses for a user
-exports.getReferralBonuses = async (req, res) => {
-  const { userId } = req.params;
+const getReferralBonuses = async (req, res) => {
+  const userId = req.user._id;
 
   try {
     const referralBonuses = await ReferralBonus.find({ user: userId });
@@ -44,3 +42,15 @@ exports.getReferralBonuses = async (req, res) => {
     res.status(500).json({ message: "Error fetching referral bonuses", error });
   }
 };
+
+const allReferralBonuses = async (req, res) => {
+  try {
+    const allReferralBonuses = await ReferralBonus.find();
+    res.status(200).json(allReferralBonuses);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching referral bonuses", error });
+  }
+};
+
+// module.exports = { assignReferralBonus, getReferralBonuses };
+module.exports = { assignReferralBonus, getReferralBonuses, allReferralBonuses };

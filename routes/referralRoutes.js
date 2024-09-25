@@ -1,6 +1,15 @@
 const express = require("express");
-const { createReferral, updateReferralStatus, getUserReferrals } = require("../controllers/ReferralController");
-const { assignReferralBonus, getReferralBonuses } = require("../controllers/referralBonusController");
+const {
+  createReferral,
+  updateReferralStatus,
+  getUserReferrals,
+  getReferrals,
+} = require("../controllers/ReferralController");
+const {
+  assignReferralBonus,
+  getReferralBonuses,
+  allReferralBonuses,
+} = require("../controllers/referralBonusController");
 const { isAuthenticated } = require("../middlewares/auth");
 
 const router = express.Router();
@@ -8,13 +17,21 @@ const router = express.Router();
 // POST /api/referral
 router.post("/", isAuthenticated, createReferral);
 
-// GET /api/referral/user-referrals
+// // GET /api/referral/user-referrals
 router.get("/", isAuthenticated, getUserReferrals);
 
-// GET /api/referral/bonus
-router.get("/referral-bonus", isAuthenticated, getReferralBonuses);
+// Get all referrals
+router.get("/all", getReferrals);
 
-// POST /api/referral/referral-bonus
+// // GET /api/referral/bonus
+router.get("/referralbonus", isAuthenticated, getReferralBonuses);
+
+// Get all Referral Bonuses
+router.get("/referralbonus/all", allReferralBonuses);
+
+// // POST /api/referral/referral-bonus
 router.post("/referral-bonus", isAuthenticated, assignReferralBonus);
+
+router.put("/referral-status", isAuthenticated, updateReferralStatus);
 
 module.exports = router;
