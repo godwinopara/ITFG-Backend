@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const Referral = require("../models/Referral");
 const ReferralBonus = require("../models/ReferralBonuses");
+const { generateCustomReferralCode } = require("../utils/generateReferralCode");
 
 // Helper function to generate JWT
 const generateToken = (user) => {
@@ -14,7 +15,7 @@ const generateToken = (user) => {
 // Signup
 const signup = async (req, res) => {
   try {
-    const { name, email, password, referralLink, newUserReferralCode, referredByReferralCode } = req.body;
+    const { name, email, password, nationality, referral } = req.body;
 
     // Check if user already exists
     const existingUser = await User.findOne({ email });
@@ -25,18 +26,22 @@ const signup = async (req, res) => {
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create new user
+    const referralCode = generateCustomReferralCode();
+    const referralLink = `https://indextradefinancialgroup.com/referralcode=${referralCode}`;
+
+    //Create new user
     const newUser = new User({
       name,
       email,
       referralLink,
-      referralCode: newUserReferralCode,
+      nationality,
+      referralCode: referralCode,
       password: hashedPassword,
     });
 
     // Handle referral logic
-    if (referredByReferralCode) {
-      const referringUser = await User.findOne({ referralCode: referredByReferralCode });
+    if (referral) {
+      const referringUser = await User.findOne({ referralCode: referral });
 
       if (referringUser) {
         // Create referral record
@@ -48,28 +53,19 @@ const signup = async (req, res) => {
 
         await referral.save();
 
-        // // Optional: Create a referral bonus record
-        // const referralBonus = new ReferralBonus({
-        //   user: referringUser._id,
-        //   referralName: newUser.name,
-        //   email: newUser.email,
-        //   amount: 100, // You can set this as a default or calculate dynamically
-        // });
+        // Create a referral bonus record
+        const referralBonus = new ReferralBonus({
+          user: referringUser._id,
+          referralName: newUser.name,
+          email: newUser.email,
+          amount: 50, // You can set this as a default or calculate dynamically
+        });
 
-        // await referralBonus.save();
+        await referralBonus.save();
       }
     }
 
     await newUser.save();
-
-    const populatedUser = await User.findById(newUser)
-      .select("-password") // Exclude password from the response
-      .populate("deposits") // Populate virtual deposits
-      .populate("withdrawals") // Populate virtual withdrawals
-      .populate("referrals") // Populate virtual referrals
-      .populate("referralBonuses") // Populate virtual referral bonuses
-      .populate("investments") // Populate virtual investments
-      .populate("referredBy", "name email date status");
 
     // Generate JWT
     const token = generateToken(newUser);
@@ -77,7 +73,7 @@ const signup = async (req, res) => {
     // Send response with user details and token
     res.status(201).json({
       message: "User registered successfully",
-      user: populatedUser,
+      user: newUser,
       token,
     });
   } catch (error) {
