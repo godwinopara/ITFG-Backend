@@ -6,6 +6,6 @@ const router = express.Router();
 
 router.get("/", isAuthenticated, getUserDeposits);
 router.post("/", isAuthenticated, createDeposit);
-router.get("/all", getDeposits);
+router.get("/all", isAdmin, getDeposits);
 
 module.exports = router;

@@ -45,13 +45,13 @@ const signup = async (req, res) => {
 
       if (referringUser) {
         // Create referral record
-        const referral = new Referral({
+        const addReferral = new Referral({
           referred_by: referringUser._id,
           referred_user: newUser._id,
           status: "pending",
         });
 
-        await referral.save();
+        await addReferral.save();
 
         // Create a referral bonus record
         const referralBonus = new ReferralBonus({

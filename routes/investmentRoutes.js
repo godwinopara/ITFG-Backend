@@ -8,6 +8,7 @@ const {
   getUsersEndedInvestments,
 } = require("../controllers/investmentController");
 const { isAuthenticated } = require("../middlewares/auth");
+const { isAdmin } = require("../middlewares/admin");
 
 const router = express.Router();
 
@@ -23,8 +24,8 @@ router.get("/active", isAuthenticated, getActiveUserInvestments);
 // GET Ended Investments ---- GET /api/investments/ended
 router.get("/ended", isAuthenticated, getUserEndedInvestments);
 
-router.get("/active/all", getActiveUsersInvestments);
+router.get("/active/all", isAdmin, getActiveUsersInvestments);
 
-router.get("/ended/all", getUsersEndedInvestments);
+router.get("/ended/all", isAdmin, getUsersEndedInvestments);
 
 module.exports = router;

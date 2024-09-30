@@ -16,7 +16,6 @@ const isAuthenticated = async (req, res, next) => {
 
     // Find the user by ID from the decoded token
     const user = await User.findById(decoded.id);
-    console.log(decoded);
 
     if (!user) {
       return res.status(404).json({ error: "User not found." });

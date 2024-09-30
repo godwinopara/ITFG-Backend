@@ -11,6 +11,7 @@ const {
   allReferralBonuses,
 } = require("../controllers/referralBonusController");
 const { isAuthenticated } = require("../middlewares/auth");
+const { isAdmin } = require("../middlewares/admin");
 
 const router = express.Router();
 
@@ -21,13 +22,13 @@ router.post("/", isAuthenticated, createReferral);
 router.get("/", isAuthenticated, getUserReferrals);
 
 // Get all referrals
-router.get("/all", getReferrals);
+router.get("/all", isAdmin, getReferrals);
 
 // // GET /api/referral/bonus
 router.get("/referralbonus", isAuthenticated, getReferralBonuses);
 
 // Get all Referral Bonuses
-router.get("/referralbonus/all", allReferralBonuses);
+router.get("/referralbonus/all", isAdmin, allReferralBonuses);
 
 // // POST /api/referral/referral-bonus
 router.post("/referral-bonus", isAuthenticated, assignReferralBonus);

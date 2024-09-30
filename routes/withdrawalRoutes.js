@@ -6,6 +6,6 @@ const router = express.Router();
 
 router.get("/", isAuthenticated, getUserWithdrawals);
 router.post("/", isAuthenticated, addWithdrawal);
-router.get("/all", getWithdrawals);
+router.get("/all", isAdmin, getWithdrawals);
 
 module.exports = router;

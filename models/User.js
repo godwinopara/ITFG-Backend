@@ -16,7 +16,6 @@ const UserSchema = new Schema(
     },
     mobile: {
       type: String,
-      required: true,
     },
     nationality: {
       type: String,
