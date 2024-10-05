@@ -20,7 +20,7 @@ const adminLogin = async (req, res) => {
 
     // Fetch the saved user with populated fields
 
-    // Generate JWT
+    // Generate JWT Token
     const token = generateToken(user);
 
     // Send response with user details and token
